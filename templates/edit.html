@@ -1,0 +1,65 @@
+{% extends "layout.html" %}
+{% block title %}
+Editare
+{% endblock %}
+{% block content %}
+<h2>Editare {{ entity.replace('_', ' ').capitalize() }}</h2>
+{% if entity == 'persoana' %}
+<form action="{{ url_for('update_persoana') }}" method="POST">
+    <input type="hidden" name="id" value="{{ data['id'] }}">
+    <input type="text" name="nume" value="{{ data['nume'] }}" placeholder="Nume" required>
+    <input type="text" name="prenume" value="{{ data['prenume'] }}" placeholder="Prenume" required>
+    <input type="text" name="sex" value="{{ data['sex'] }}" placeholder="Sex">
+    <input type="number" name="varsta" value="{{ data['varsta'] }}" placeholder="Vârstă">
+    <input type="text" name="tip_client" value="{{ data['tip_client'] }}" placeholder="Tip client">
+    <input type="text" name="numar_de_telefon" value="{{ data['numar_de_telefon'] }}" placeholder="Telefon">
+    <input type="text" name="adresa" value="{{ data['adresa'] }}" placeholder="Adresa">
+    <input type="text" name="oras" value="{{ data['oras'] }}" placeholder="Oraș">
+    <label><input type="checkbox" name="permis_conducere" {% if data['permis_conducere'] %}checked{% endif %}>Permis</label>
+    <label><input type="checkbox" name="abonament_platit" {% if data['abonament_platit'] %}checked{% endif %}>Abonament</label>
+    <input type="submit" value="Salvează modificările">
+</form>
+{% elif entity == 'profil_psihologic' %}
+<form action="{{ url_for('update_profil_psihologic') }}" method="POST">
+    <input type="hidden" name="id_profil" value="{{ data['id_profil'] }}">
+    <input type="number" name="id_persoana" value="{{ data['id_persoana'] }}" placeholder="ID Persoană" required>
+    <input type="text" name="predominanta_de_emisfera" value="{{ data['predominanta_de_emisfera'] }}" placeholder="Emisferă">
+    <input type="text" name="tipologia_de_personalitate" value="{{ data['tipologia_de_personalitate'] }}" placeholder="Personalitate">
+    <input type="text" name="intentii_viitoare" value="{{ data['intentii_viitoare'] }}" placeholder="Intenții">
+    <input type="text" name="hobbyuri" value="{{ data['hobbyuri'] }}" placeholder="Hobbyuri">
+    <input type="text" name="preferinte_job" value="{{ data['preferinte_job'] }}" placeholder="Preferințe job">
+    <input type="submit" value="Salvează modificările">
+</form>
+{% elif entity == 'educatie' %}
+<form action="{{ url_for('update_educatie') }}" method="POST">
+    <input type="hidden" name="id_educatie" value="{{ data['id_educatie'] }}">
+    <input type="number" name="id_persoana" value="{{ data['id_persoana'] }}" placeholder="ID Persoană" required>
+    <input type="text" name="nivel" value="{{ data['nivel'] }}" placeholder="Nivel">
+    <input type="text" name="scoala" value="{{ data['scoala'] }}" placeholder="Școala">
+    <input type="submit" value="Salvează modificările">
+</form>
+{% elif entity == 'experienta_profesionala' %}
+<form action="{{ url_for('update_experienta_profesionala') }}" method="POST">
+    <input type="hidden" name="id_exp" value="{{ data['id_exp'] }}">
+    <input type="number" name="id_persoana" value="{{ data['id_persoana'] }}" placeholder="ID Persoană" required>
+    <input type="text" name="loc_de_lucru_anterior" value="{{ data['loc_de_lucru_anterior'] }}" placeholder="Loc de lucru anterior">
+    <input type="text" name="experienta_anterioara" value="{{ data['experienta_anterioara'] }}" placeholder="Experiență anterioară">
+    <input type="submit" value="Salvează modificările">
+</form>
+{% elif entity == 'familie' %}
+<form action="{{ url_for('update_familie') }}" method="POST">
+    <input type="hidden" name="id_familie" value="{{ data['id_familie'] }}">
+    <input type="number" name="id_persoana" value="{{ data['id_persoana'] }}" placeholder="ID Persoană" required>
+    <input type="text" name="parinti" value="{{ data['parinti'] }}" placeholder="Părinți">
+    <input type="submit" value="Salvează modificările">
+</form>
+{% elif entity == 'firma' %}
+<form action="{{ url_for('update_firma') }}" method="POST">
+    <input type="hidden" name="id_firma" value="{{ data['id_firma'] }}">
+    <input type="text" name="nume_firma" value="{{ data['nume_firma'] }}" placeholder="Nume firmă" required>
+    <input type="number" name="nr_angajati" value="{{ data['nr_angajati'] }}" placeholder="Nr. angajați">
+    <input type="number" name="locuri_disponibile" value="{{ data['locuri_disponibile'] }}" placeholder="Locuri disponibile">
+    <input type="submit" value="Salvează modificările">
+</form>
+{% endif %}
+{% endblock %}

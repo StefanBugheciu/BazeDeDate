@@ -1,0 +1,191 @@
+{% extends "layout.html" %}
+{% block title %}
+    GeniusConnect - Unleash Your Potential
+{% endblock %}
+
+{% block content %}
+<!-- Font clar pentru home -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+<style>
+    .home-main-font {
+        font-family: 'Inter', 'Segoe UI', 'San Francisco', Arial, sans-serif !important;
+        font-size: 1.08rem;
+        letter-spacing: 0.01em;
+        color: #2d3a2e;
+    }
+    .home-main-font h1, .home-main-font h2, .home-main-font h3, .home-main-font h4, .home-main-font h5 {
+        font-family: 'Inter', 'Segoe UI', 'San Francisco', Arial, sans-serif !important;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+    }
+    .home-main-font p, .home-main-font li, .home-main-font label, .home-main-font span {
+        font-family: 'Inter', 'Segoe UI', 'San Francisco', Arial, sans-serif !important;
+        font-weight: 400;
+    }
+    /* Modern About Section */
+    .about-modern {
+        background: linear-gradient(120deg, #e3f6fc 0%, #e6f4ea 100%);
+        border-radius: 22px;
+        padding: 40px 24px 36px 24px;
+        margin-bottom: 36px;
+        max-width: 900px;
+        margin-left: auto;
+        margin-right: auto;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border: 1.5px solid #b7e0c7;
+    }
+    .about-modern h2 {
+        font-family: 'Quicksand', 'Inter', Arial, sans-serif;
+        color: #3a4d39;
+        font-weight: 700;
+        font-size: 2.1rem;
+        margin-bottom: 18px;
+        text-align: center;
+        letter-spacing: -0.5px;
+    }
+    .about-modern p {
+        color: #4B6B3A;
+        font-size: 1.18rem;
+        line-height: 1.8;
+        text-align: center;
+        margin: 0 auto;
+        max-width: 650px;
+        font-family: 'Quicksand', 'Inter', Arial, sans-serif;
+        font-weight: 500;
+        background: none;
+    }
+    @media (max-width: 700px) {
+        .about-modern {
+            padding: 24px 8px 20px 8px;
+        }
+        .about-modern h2 {
+            font-size: 1.4rem;
+        }
+        .about-modern p {
+            font-size: 1rem;
+        }
+    }
+    /* Hero Section */
+    .hero-section {
+        background: linear-gradient(120deg, #b7e0c7 0%, #c9e4f6 100%);
+        border-radius: 28px;
+        box-shadow: 0 4px 32px rgba(44,62,47,0.10);
+        padding: 48px 32px 32px 32px;
+        display: flex;
+        align-items: center;
+        gap: 32px;
+        margin-bottom: 40px;
+        max-width: 900px;
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    /* Responsive pentru hero-section */
+    @media (max-width: 700px) {
+        .hero-section {
+            padding: 24px 8px 20px 8px !important;
+            flex-direction: column !important;
+            gap: 16px !important;
+            max-width: 100% !important;
+            width: 100% !important;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+        .hero-section .hero-content {
+            text-align: center;
+            word-break: break-word;
+            padding: 0 !important;
+            width: 100% !important;
+            min-width: 0 !important;
+        }
+        .hero-section .logo {
+            max-width: 90px !important;
+            margin: 0 auto !important;
+            display: block !important;
+        }
+        .hero-section h1.display-4 {
+            font-size: 1.4rem !important;
+            margin: 0 auto !important;
+        }
+        .hero-section .lead {
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+            font-size: 1rem !important;
+            max-width: 100%;
+            word-break: break-word;
+            overflow-wrap: break-word;
+            margin-left: 0;
+            margin-right: 0;
+            color: #4B6B3A !important;
+        }
+        .home-main-font {
+            margin-top: 160px !important;
+        }
+    }
+</style>
+<div class="home-main-font">
+    <div class="hero-section">
+        <div class="hero-content">
+            <h1 class="display-4">
+                <span style="display: inline-block; vertical-align: middle;">
+                    <i class="fas fa-seedling" style="color: #7BA05B; margin-right: 12px;"></i>
+                </span>
+                Descoperă-ți potențialul cu <span class="highlight" style="color: #7BA05B;">GeniusConnect</span>
+            </h1>
+            <p class="lead">
+                Descătușește-ți potențialul prin insight-uri personalizate și strategii de optimizare blânde.
+            </p>
+        </div>
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="GeniusConnect Logo" class="logo">
+    </div>
+
+    <div class="about-modern">
+        <h2>Despre noi</h2>
+        <p>
+            Bine ai venit la GeniusConnect, unde credem că fiecare are puncte forte unice ce așteaptă să fie descoperite.<br>
+            Misiunea noastră este să oferim insight-uri personalizate și strategii blânde, bazate pe date cognitive, pentru a ajuta fiecare persoană să prospere în mediul său de învățare și muncă.
+        </p>
+    </div>
+
+    <div class="services-section mt-5 text-center" style="background: linear-gradient(120deg, #f6f8fa 0%, #eaf6f0 100%); border-radius: 22px; box-shadow: 0 2px 16px rgba(44,62,47,0.07); padding: 32px 0;">
+        <div class="container" style="max-width: 900px; margin: 0 auto;">
+            <h2 style="color: #3a4d39; font-weight: 600; margin-bottom: 24px;">Serviciile noastre</h2>
+            <div class="row mt-4 justify-content-center" style="display: flex; gap: 32px; flex-wrap: wrap;">
+                <div class="col-md-4" style="flex: 1 1 220px; min-width: 220px; max-width: 320px;">
+                    <div class="service-card service-card-orange rounded" style="background: #f6e7d7; color: #7BA05B; border-radius: 18px; box-shadow: 0 2px 12px rgba(44,62,47,0.06); padding: 28px 18px; transition: transform 0.2s; animation: fadeIn 1s;">
+                        <i class="fas fa-lightbulb fa-2x" style="color: #f6d55c; margin-bottom: 10px;"></i>
+                        <h5 style="font-size: 1.2rem; font-weight: 600; margin-bottom: 8px;">Descoperă</h5>
+                        <p style="font-size: 1rem;">Află-ți punctele forte cognitive și potențialul de creștere.</p>
+                    </div>
+                </div>
+                <div class="col-md-4" style="flex: 1 1 220px; min-width: 220px; max-width: 320px;">
+                    <div class="service-card service-card-green rounded" style="background: #e6f4ea; color: #4B6B3A; border-radius: 18px; box-shadow: 0 2px 12px rgba(44,62,47,0.06); padding: 28px 18px; transition: transform 0.2s; animation: fadeIn 1.2s;">
+                        <i class="fas fa-brain fa-2x" style="color: #7BA05B; margin-bottom: 10px;"></i>
+                        <h5 style="font-size: 1.2rem; font-weight: 600; margin-bottom: 8px;">Optimizează</h5>
+                        <p style="font-size: 1rem;">Optimizează-ți experiențele de învățare și muncă prin strategii personalizate.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 d-flex justify-content-center" style="flex: 1 1 220px; min-width: 220px; max-width: 320px;">
+                    <div class="service-card service-card-pink rounded mx-auto" style="background: #f6eaf6; color: #567488; border-radius: 18px; box-shadow: 0 2px 12px rgba(44,62,47,0.06); padding: 28px 18px; transition: transform 0.2s; animation: fadeIn 1.4s;">
+                        <i class="fas fa-users fa-2x" style="color: #b7e0c7; margin-bottom: 10px;"></i>
+                        <h5 style="font-size: 1.2rem; font-weight: 600; margin-bottom: 8px;">Conectează</h5>
+                        <p style="font-size: 1rem;">Fă parte dintr-o comunitate de oameni cu aceleași valori și aspirații.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <style>
+    /* Animatie blândă la apariție */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(24px);}
+        to { opacity: 1; transform: translateY(0);}
+    }
+    </style>
+</div>
+{% endblock %}

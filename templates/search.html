@@ -1,0 +1,76 @@
+{% extends "layout.html" %}
+{% block title %}Căutare în tabele{% endblock %}
+{% block content %}
+<h2 style="color: #3a4d39; font-weight: 600; margin-bottom: 18px;"><i class="fas fa-search" style="color: #7BA05B; margin-right: 8px;"></i> Căutare în tabele</h2>
+<form method="POST" id="search-form" style="background: #f6f8fa; border-radius: 16px;">
+    <label for="table" style="color: #567488; font-weight: 600;"><i class="fas fa-table"></i> Alege tabelul:</label>
+    <select name="table" id="table-select" required onchange="updateFields()">
+        <option value="">-- Selectează tabelul --</option>
+        {% for t in tables.keys() %}
+            <option value="{{ t }}" {% if selected_table == t %}selected{% endif %}>{{ t|capitalize }}</option>
+        {% endfor %}
+    </select>
+    <label for="field" style="color: #567488; font-weight: 600;"><i class="fas fa-filter"></i> Criteriu:</label>
+    <select name="field" id="field-select" required>
+        {% if selected_table %}
+            {% for f in tables[selected_table] %}
+                <option value="{{ f }}" {% if selected_field == f %}selected{% endif %}>{{ f.replace('_', ' ')|capitalize }}</option>
+            {% endfor %}
+        {% else %}
+            <option value="">-- Selectează criteriul --</option>
+        {% endif %}
+    </select>
+    <input type="text" name="value" placeholder="Valoare de căutare" value="{{ search_value or '' }}" required>
+    <input type="submit" value="Caută" class="btn-accent">
+</form>
+
+{% if results is not none %}
+    <h3 style="color: #3a4d39; font-weight: 600; margin-top: 24px;">Rezultate:</h3>
+    {% if results|length == 0 %}
+        <p style="color: #b94a48;">Nicio înregistrare găsită.</p>
+    {% else %}
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                    {% for col in results[0].keys() %}
+                        <th>{{ col.replace('_', ' ')|capitalize }}</th>
+                    {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                {% for row in results %}
+                    <tr>
+                    {% for col in row.keys() %}
+                        <td>{{ row[col] }}</td>
+                    {% endfor %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+{% endif %}
+
+<script type="text/javascript">
+    const tableFields = {{ tables | tojson | safe }};
+    function updateFields() {
+        const table = document.getElementById('table-select').value;
+        const fieldSelect = document.getElementById('field-select');
+        fieldSelect.innerHTML = '';
+        if (tableFields[table]) {
+            tableFields[table].forEach(function(field) {
+                const opt = document.createElement('option');
+                opt.value = field;
+                opt.innerText = field.replace('_', ' ').charAt(0).toUpperCase() + field.replace('_', ' ').slice(1);
+                fieldSelect.appendChild(opt);
+            });
+        } else {
+            const opt = document.createElement('option');
+            opt.value = '';
+            opt.innerText = '-- Selectează criteriul --';
+            fieldSelect.appendChild(opt);
+        }
+    }
+</script>
+{% endblock %}

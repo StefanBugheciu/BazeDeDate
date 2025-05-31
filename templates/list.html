@@ -1,0 +1,319 @@
+{% extends "layout.html" %}
+{% block title %}Editare Tabele{% endblock %}
+{% block content %}
+
+<div class="apple-container" style="background: #fff; border-radius: 22px; box-shadow: 0 4px 32px 0 rgba(44, 62, 47, 0.08); padding: 32px 18px;">
+    <form method="get" action="{{ url_for('list') }}" class="apple-form" style="background: #f6f8fa; border-radius: 16px;">
+        <label for="table-select" style="color: #567488; font-weight: 600;"><i class="fas fa-table"></i> Alege tabelul:</label>
+        <select name="table" id="table-select" onchange="this.form.submit()">
+            <option value="toate" {% if selected_table == 'toate' %}selected{% endif %}>Toate</option>
+            <option value="persoane" {% if selected_table == 'persoane' %}selected{% endif %}>Persoane</option>
+            <option value="profil_psihologic" {% if selected_table == 'profil_psihologic' %}selected{% endif %}>Profil psihologic</option>
+            <option value="educatie" {% if selected_table == 'educatie' %}selected{% endif %}>Educatie</option>
+            <option value="experienta_profesionala" {% if selected_table == 'experienta_profesionala' %}selected{% endif %}>Experienta profesionala</option>
+            <option value="familie" {% if selected_table == 'familie' %}selected{% endif %}>Familie</option>
+            <option value="firme" {% if selected_table == 'firme' %}selected{% endif %}>Firme</option>
+        </select>
+    </form>
+
+    {% set show_persoane = selected_table == 'persoane' or selected_table == 'toate' %}
+    {% set show_profil_psihologic = selected_table == 'profil_psihologic' or selected_table == 'toate' %}
+    {% set show_educatie = selected_table == 'educatie' or selected_table == 'toate' %}
+    {% set show_experienta_profesionala = selected_table == 'experienta_profesionala' or selected_table == 'toate' %}
+    {% set show_familie = selected_table == 'familie' or selected_table == 'toate' %}
+    {% set show_firme = selected_table == 'firme' or selected_table == 'toate' %}
+
+    {% if show_persoane %}
+        <h2>Persoane</h2>
+        <form action="{{ url_for('add_persoana') }}" method="POST" class="apple-form" style="text-align:center;">
+            <input type="text" name="nume" placeholder="Nume" required>
+            <input type="text" name="prenume" placeholder="Prenume" required>
+            <input type="text" name="sex" placeholder="Sex">
+            <input type="number" name="varsta" placeholder="Vârstă">
+            <input type="text" name="tip_client" placeholder="Tip client">
+            <input type="text" name="numar_de_telefon" placeholder="Telefon">
+            <input type="text" name="adresa" placeholder="Adresa">
+            <input type="text" name="oras" placeholder="Oraș">
+            <label><input type="checkbox" name="permis_conducere">Permis</label>
+            <label><input type="checkbox" name="abonament_platit">Abonament</label>
+            <div style="text-align:center; width:100%;">
+                <input type="submit" value="Adaugă persoană">
+            </div>
+        </form>
+        <div class="table-responsive">
+            <table class="apple-table">
+                <thead>
+                    <tr>
+                        <th style="width: 40px;"></th>
+                        <th>ID</th><th>Nume</th><th>Prenume</th><th>Sex</th><th>Vârstă</th><th>Tip client</th><th>Telefon</th><th>Adresa</th><th>Oraș</th><th>Permis</th><th>Abonament</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for p in persoane %}
+                    <tr>
+                        <td>
+                            <div class="action-dropdown">
+                                <button class="action-dropbtn" title="Acțiuni">&#8942;</button>
+                                <div class="action-dropdown-content">
+                                    <form action="{{ url_for('edit_persoana') }}" method="POST" class="apple-form-actions">
+                                        <input type="hidden" name="id" value="{{ p['id'] }}">
+                                        <button type="submit" class="action-btn">Editează</button>
+                                    </form>
+                                    <form action="{{ url_for('delete_persoana') }}" method="POST" class="apple-form-actions" onsubmit="return confirm('Sigur vrei să ștergi această persoană?');">
+                                        <input type="hidden" name="id" value="{{ p['id'] }}">
+                                        <button type="submit" class="action-btn">Șterge</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </td>
+                        <td>{{ p['id'] }}</td><td>{{ p['nume'] }}</td><td>{{ p['prenume'] }}</td><td>{{ p['sex'] }}</td><td>{{ p['varsta'] }}</td><td>{{ p['tip_client'] }}</td><td>{{ p['numar_de_telefon'] }}</td><td>{{ p['adresa'] }}</td><td>{{ p['oras'] }}</td><td>{{ p['permis_conducere'] }}</td><td>{{ p['abonament_platit'] }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+
+    {% if show_profil_psihologic %}
+        <h2>Profil psihologic</h2>
+        <form action="{{ url_for('add_profil_psihologic') }}" method="POST" class="apple-form" style="text-align:center;">
+            <select name="id_persoana" required>
+                <option value="">Selectează persoana</option>
+                {% for p in persoane %}
+                    <option value="{{ p['id'] }}">{{ p['nume'] }} {{ p['prenume'] }} (ID: {{ p['id'] }})</option>
+                {% endfor %}
+            </select>
+            <input type="text" name="predominanta_de_emisfera" placeholder="Emisferă">
+            <input type="text" name="tipologia_de_personalitate" placeholder="Personalitate">
+            <input type="text" name="intentii_viitoare" placeholder="Intenții">
+            <input type="text" name="hobbyuri" placeholder="Hobbyuri">
+            <input type="text" name="preferinte_job" placeholder="Preferințe job">
+            <div style="text-align:center; width:100%;">
+                <input type="submit" value="Adaugă profil psihologic">
+            </div>
+        </form>
+        <div class="table-responsive">
+            <table class="apple-table">
+                <thead>
+                    <tr>
+                        <th style="width: 40px;"></th>
+                        <th>ID Profil</th><th>ID Persoană</th><th>Emisferă</th><th>Personalitate</th><th>Intenții</th><th>Hobbyuri</th><th>Preferințe job</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for pr in profil_psihologic %}
+                    <tr>
+                        <td>
+                            <div class="action-dropdown">
+                                <button class="action-dropbtn" title="Acțiuni">&#8942;</button>
+                                <div class="action-dropdown-content">
+                                    <form action="{{ url_for('edit_profil_psihologic') }}" method="POST" class="apple-form-actions">
+                                        <input type="hidden" name="id_profil" value="{{ pr['id_profil'] }}">
+                                        <button type="submit" class="action-btn">Editează</button>
+                                    </form>
+                                    <form action="{{ url_for('delete_profil_psihologic') }}" method="POST" class="apple-form-actions" onsubmit="return confirm('Sigur vrei să ștergi acest profil psihologic?');">
+                                        <input type="hidden" name="id_profil" value="{{ pr['id_profil'] }}">
+                                        <button type="submit" class="action-btn">Șterge</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </td>
+                        <td>{{ pr['id_profil'] }}</td><td>{{ pr['id_persoana'] }}</td><td>{{ pr['predominanta_de_emisfera'] }}</td><td>{{ pr['tipologia_de_personalitate'] }}</td><td>{{ pr['intentii_viitoare'] }}</td><td>{{ pr['hobbyuri'] }}</td><td>{{ pr['preferinte_job'] }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+
+    {% if show_educatie %}
+        <h2>Educatie</h2>
+        <form action="{{ url_for('add_educatie') }}" method="POST" class="apple-form" style="text-align:center;">
+            <select name="id_persoana" required>
+                <option value="">Selectează persoana</option>
+                {% for p in persoane %}
+                    <option value="{{ p['id'] }}">{{ p['nume'] }} {{ p['prenume'] }} (ID: {{ p['id'] }})</option>
+                {% endfor %}
+            </select>
+            <input type="text" name="nivel" placeholder="Nivel">
+            <input type="text" name="scoala" placeholder="Școala">
+            <div style="text-align:center; width:100%;">
+                <input type="submit" value="Adaugă educație">
+            </div>
+        </form>
+        <div class="table-responsive">
+            <table class="apple-table">
+                <thead>
+                    <tr>
+                        <th style="width: 40px;"></th>
+                        <th>ID Educație</th><th>ID Persoană</th><th>Nivel</th><th>Școala</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for e in educatie %}
+                    <tr>
+                        <td>
+                            <div class="action-dropdown">
+                                <button class="action-dropbtn" title="Acțiuni">&#8942;</button>
+                                <div class="action-dropdown-content">
+                                    <form action="{{ url_for('edit_educatie') }}" method="POST" class="apple-form-actions">
+                                        <input type="hidden" name="id_educatie" value="{{ e['id_educatie'] }}">
+                                        <button type="submit" class="action-btn">Editează</button>
+                                    </form>
+                                    <form action="{{ url_for('delete_educatie') }}" method="POST" class="apple-form-actions" onsubmit="return confirm('Sigur vrei să ștergi această educație?');">
+                                        <input type="hidden" name="id_educatie" value="{{ e['id_educatie'] }}">
+                                        <button type="submit" class="action-btn">Șterge</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </td>
+                        <td>{{ e['id_educatie'] }}</td><td>{{ e['id_persoana'] }}</td><td>{{ e['nivel'] }}</td><td>{{ e['scoala'] }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+
+    {% if show_experienta_profesionala %}
+        <h2>Experienta profesionala</h2>
+        <form action="{{ url_for('add_experienta_profesionala') }}" method="POST" class="apple-form" style="text-align:center;">
+            <select name="id_persoana" required>
+                <option value="">Selectează persoana</option>
+                {% for p in persoane %}
+                    <option value="{{ p['id'] }}">{{ p['nume'] }} {{ p['prenume'] }} (ID: {{ p['id'] }})</option>
+                {% endfor %}
+            </select>
+            <input type="text" name="loc_de_lucru_anterior" placeholder="Loc de lucru anterior">
+            <input type="text" name="experienta_anterioara" placeholder="Experiență anterioară">
+            <div style="text-align:center; width:100%;">
+                <input type="submit" value="Adaugă experiență profesională">
+            </div>
+        </form>
+        <div class="table-responsive">
+            <table class="apple-table">
+                <thead>
+                    <tr>
+                        <th style="width: 40px;"></th>
+                        <th>ID Exp</th><th>ID Persoană</th><th>Loc de lucru anterior</th><th>Experiență anterioară</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for ex in experienta_profesionala %}
+                    <tr>
+                        <td>
+                            <div class="action-dropdown">
+                                <button class="action-dropbtn" title="Acțiuni">&#8942;</button>
+                                <div class="action-dropdown-content">
+                                    <form action="{{ url_for('edit_experienta_profesionala') }}" method="POST" class="apple-form-actions">
+                                        <input type="hidden" name="id_exp" value="{{ ex['id_exp'] }}">
+                                        <button type="submit" class="action-btn">Editează</button>
+                                    </form>
+                                    <form action="{{ url_for('delete_experienta_profesionala') }}" method="POST" class="apple-form-actions" onsubmit="return confirm('Sigur vrei să ștergi această experiență?');">
+                                        <input type="hidden" name="id_exp" value="{{ ex['id_exp'] }}">
+                                        <button type="submit" class="action-btn">Șterge</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </td>
+                        <td>{{ ex['id_exp'] }}</td><td>{{ ex['id_persoana'] }}</td><td>{{ ex['loc_de_lucru_anterior'] }}</td><td>{{ ex['experienta_anterioara'] }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+
+    {% if show_familie %}
+        <h2>Familie</h2>
+        <form action="{{ url_for('add_familie') }}" method="POST" class="apple-form" style="text-align:center;">
+            <select name="id_persoana" required>
+                <option value="">Selectează persoana</option>
+                {% for p in persoane %}
+                    <option value="{{ p['id'] }}">{{ p['nume'] }} {{ p['prenume'] }} (ID: {{ p['id'] }})</option>
+                {% endfor %}
+            </select>
+            <input type="text" name="parinti" placeholder="Părinți">
+            <div style="text-align:center; width:100%;">
+                <input type="submit" value="Adaugă familie">
+            </div>
+        </form>
+        <div class="table-responsive">
+            <table class="apple-table">
+                <thead>
+                    <tr>
+                        <th style="width: 40px;"></th>
+                        <th>ID Familie</th><th>ID Persoană</th><th>Părinți</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for f in familie %}
+                    <tr>
+                        <td>
+                            <div class="action-dropdown">
+                                <button class="action-dropbtn" title="Acțiuni">&#8942;</button>
+                                <div class="action-dropdown-content">
+                                    <form action="{{ url_for('edit_familie') }}" method="POST" class="apple-form-actions">
+                                        <input type="hidden" name="id_familie" value="{{ f['id_familie'] }}">
+                                        <button type="submit" class="action-btn">Editează</button>
+                                    </form>
+                                    <form action="{{ url_for('delete_familie') }}" method="POST" class="apple-form-actions" onsubmit="return confirm('Sigur vrei să ștergi această familie?');">
+                                        <input type="hidden" name="id_familie" value="{{ f['id_familie'] }}">
+                                        <button type="submit" class="action-btn">Șterge</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </td>
+                        <td>{{ f['id_familie'] }}</td><td>{{ f['id_persoana'] }}</td><td>{{ f['parinti'] }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+
+    {% if show_firme %}
+        <h2>Firme</h2>
+        <form action="{{ url_for('add_firma') }}" method="POST" class="apple-form" style="text-align:center;">
+            <input type="text" name="nume_firma" placeholder="Nume firmă" required>
+            <input type="number" name="nr_angajati" placeholder="Nr. angajați">
+            <input type="number" name="locuri_disponibile" placeholder="Locuri disponibile">
+            <div style="text-align:center; width:100%;">
+                <input type="submit" value="Adaugă firmă">
+            </div>
+        </form>
+        <div class="table-responsive">
+            <table class="apple-table">
+                <thead>
+                    <tr>
+                        <th style="width: 40px;"></th>
+                        <th>ID Firmă</th><th>Nume firmă</th><th>Nr. angajați</th><th>Locuri disponibile</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for fi in firme %}
+                    <tr>
+                        <td>
+                            <div class="action-dropdown">
+                                <button class="action-dropbtn" title="Acțiuni">&#8942;</button>
+                                <div class="action-dropdown-content">
+                                    <form action="{{ url_for('edit_firma') }}" method="POST" class="apple-form-actions">
+                                        <input type="hidden" name="id_firma" value="{{ fi['id_firma'] }}">
+                                        <button type="submit" class="action-btn">Editează</button>
+                                    </form>
+                                    <form action="{{ url_for('delete_firma') }}" method="POST" class="apple-form-actions" onsubmit="return confirm('Sigur vrei să ștergi această firmă?');">
+                                        <input type="hidden" name="id_firma" value="{{ fi['id_firma'] }}">
+                                        <button type="submit" class="action-btn">Șterge</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </td>
+                        <td>{{ fi['id_firma'] }}</td><td>{{ fi['nume_firma'] }}</td><td>{{ fi['nr_angajati'] }}</td><td>{{ fi['locuri_disponibile'] }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
